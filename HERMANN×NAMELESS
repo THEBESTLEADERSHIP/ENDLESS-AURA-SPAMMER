@@ -1,0 +1,367 @@
+-- ULTRA HD UI SYSTEM [V5 PRO H×N SIREN COMPACT ROAST] -- 
+local TweenService = game:GetService("TweenService") 
+local SoundService = game:GetService("SoundService") 
+local Debris = game:GetService("Debris") 
+local Players = game:GetService("Players") 
+local TextChatService = game:GetService("TextChatService") 
+local Player = Players.LocalPlayer 
+local PlayerGui = Player:WaitForChild("PlayerGui") 
+
+if PlayerGui:FindFirstChild("AmaneUI") then return end 
+
+-- COMPLETE SCREEN BLACKOUT SETUP
+local loadingGui = Instance.new("ScreenGui", PlayerGui) 
+loadingGui.Name = "Loading"
+loadingGui.IgnoreGuiInset = true 
+
+local bg = Instance.new("Frame", loadingGui) 
+bg.Size = UDim2.new(1, 0, 1, 0) 
+bg.Position = UDim2.new(0, 0, 0, 0)
+bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0) 
+bg.BorderSizePixel = 0
+
+local function PlaySound(id)
+    local s = Instance.new("Sound", SoundService)
+    s.SoundId = "rbxassetid://"..id
+    s.Volume = 2.5
+    s:Play()
+    Debris:AddItem(s, 5)
+end
+
+PlaySound("3471755094")
+
+-- SIREN BLINK MECHANISM (2 Heavy Blinks)
+bg.BackgroundColor3 = Color3.fromRGB(200, 0, 0) 
+task.wait(0.25)
+bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)   
+task.wait(0.2)
+bg.BackgroundColor3 = Color3.fromRGB(200, 0, 0) 
+task.wait(0.25)
+bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)   
+
+-- HERMANN SYSTEM LOADING TEXT DESIGN
+local textHolder = Instance.new("Frame", bg)
+textHolder.Size = UDim2.new(0, 400, 0, 100)
+textHolder.Position = UDim2.new(0.5, -200, 0.5, -50)
+textHolder.BackgroundTransparency = 1
+
+local shadowText = Instance.new("TextLabel", textHolder) 
+shadowText.Size = UDim2.new(1, 0, 1, 0) 
+shadowText.Position = UDim2.new(0, 3, 0, 3) 
+shadowText.BackgroundTransparency = 1 
+shadowText.Text = "HERMANN SYSTEM LOADING..." 
+shadowText.Font = Enum.Font.Code 
+shadowText.TextSize = 28 
+shadowText.TextColor3 = Color3.fromRGB(50, 0, 0) 
+
+local mainText = Instance.new("TextLabel", textHolder) 
+mainText.Size = UDim2.new(1, 0, 1, 0) 
+mainText.Position = UDim2.new(0, 0, 0, 0)
+mainText.BackgroundTransparency = 1 
+mainText.Text = "HERMANN SYSTEM LOADING..." 
+mainText.Font = Enum.Font.Code 
+mainText.TextSize = 28 
+mainText.TextColor3 = Color3.fromRGB(255, 0, 0) 
+
+-- Screen Fade Out Animation
+task.wait(1.8) 
+local fadeTween = TweenService:Create(bg, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 1})
+TweenService:Create(mainText, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
+TweenService:Create(shadowText, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 1}):Play()
+fadeTween:Play()
+fadeTween.Completed:Wait()
+loadingGui:Destroy() 
+
+-- MAIN SCRIPT GUI INTERFACE
+local gui = Instance.new("ScreenGui") 
+gui.Name = "UI" 
+gui.ResetOnSpawn = false 
+gui.Parent = PlayerGui 
+
+local CLICK = "6895079853" 
+local function Play(id) 
+    local s = Instance.new("Sound", SoundService); 
+    s.SoundId = "rbxassetid://"..id; 
+    s.Volume = 1.5; 
+    s:Play(); 
+    Debris:AddItem(s,3) 
+end 
+
+-- Toggle Button (H×N)
+local icon = Instance.new("TextButton",gui) 
+icon.ZIndex = 1000 
+icon.Size = UDim2.new(0,65,0,35); 
+icon.Position = UDim2.new(0.05,0,0.2,0); 
+icon.Text = "H×N"; 
+icon.Font = Enum.Font.Code; 
+icon.TextSize = 18; 
+icon.TextColor3 = Color3.fromRGB(255,255,255); 
+icon.BackgroundColor3 = Color3.fromRGB(0,0,0); 
+icon.BackgroundTransparency = 0.2; 
+Instance.new("UICorner",icon).CornerRadius = UDim.new(0,6) 
+
+local UIS = game:GetService("UserInputService") 
+local dragging = false 
+local dragInput, startPos, startFramePos 
+
+icon.InputBegan:Connect(function(input) 
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then 
+        dragging = true 
+        startPos = input.Position 
+        startFramePos = icon.Position 
+        input.Changed:Connect(function() 
+            if input.UserInputState == Enum.UserInputState.End then 
+                dragging = false 
+            end 
+        end) 
+    end 
+end) 
+
+icon.InputChanged:Connect(function(input) 
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then 
+        dragInput = input 
+    end 
+end) 
+
+UIS.InputChanged:Connect(function(input) 
+    if input == dragInput and dragging then 
+        local delta = input.Position - startPos 
+        icon.Position = UDim2.new(
+            startFramePos.X.Scale, 
+            startFramePos.X.Offset + delta.X, 
+            startFramePos.Y.Scale, 
+            startFramePos.Y.Offset + delta.Y 
+        ) 
+    end 
+end)
+
+-- COMPACT GUI MAIN FRAME
+local main = Instance.new("Frame",gui) 
+main.ZIndex = 1 
+main.Size = UDim2.new(0,290,0,360); 
+main.Position = UDim2.new(0.5,-145,0.5,-180); 
+main.BackgroundColor3 = Color3.fromRGB(0,0,0); 
+main.BackgroundTransparency = 0.2; 
+main.Visible = false; 
+main.Active = true; 
+Instance.new("UICorner",main).CornerRadius = UDim.new(0,8) 
+
+-- TOP METALLIC RED LINE
+local topMetallicLine = Instance.new("Frame", main)
+topMetallicLine.Size = UDim2.new(1, -20, 0, 2)
+topMetallicLine.Position = UDim2.new(0, 10, 0, 8)
+topMetallicLine.BackgroundColor3 = Color3.fromRGB(139, 0, 0) 
+topMetallicLine.BorderSizePixel = 0
+
+-- IMAGE SETUP
+local cornerImage = Instance.new("ImageLabel", main)
+cornerImage.Name = "MenuLogo"
+cornerImage.Size = UDim2.new(0, 22, 0, 22)
+cornerImage.Position = UDim2.new(0, 68, 0, 15) 
+cornerImage.BackgroundTransparency = 1
+cornerImage.Image = "rbxassetid://129299711445020"
+cornerImage.ZIndex = 5
+Instance.new("UICorner", cornerImage).CornerRadius = UDim.new(0, 4)
+
+-- ENDLESS AURA TITLE
+local auraTitle = Instance.new("TextLabel", main)
+auraTitle.Size = UDim2.new(1, -20, 0, 22)
+auraTitle.Position = UDim2.new(0, 95, 0, 15)
+auraTitle.BackgroundTransparency = 1
+auraTitle.Text = "Eɴᴅʟᴇss Aᴜʀᴀ💢"
+auraTitle.Font = Enum.Font.Code
+auraTitle.TextSize = 13
+auraTitle.TextColor3 = Color3.fromRGB(139, 0, 0)
+auraTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+-- MIDDLE BLACK LINE
+local middleBlackLine = Instance.new("Frame", main)
+middleBlackLine.Size = UDim2.new(1, -20, 0, 2)
+middleBlackLine.Position = UDim2.new(0, 10, 0, 42)
+middleBlackLine.BackgroundColor3 = Color3.fromRGB(0, 0, 0) 
+middleBlackLine.BorderSizePixel = 0
+
+-- HERMANN×NAMELESS SPAMMER TITLE
+local namelessTitle = Instance.new("TextLabel", main)
+namelessTitle.Size = UDim2.new(1, -20, 0, 22)
+namelessTitle.Position = UDim2.new(0, 10, 0, 48)
+namelessTitle.BackgroundTransparency = 1
+namelessTitle.Text = "HERMANN×NAMELESS SPAMMER 💀"
+namelessTitle.Font = Enum.Font.Code
+namelessTitle.TextSize = 13
+namelessTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+namelessTitle.TextXAlignment = Enum.TextXAlignment.Center 
+
+-- BOTTOM BLACK LINE
+local bottomBlackLine = Instance.new("Frame", main)
+bottomBlackLine.Size = UDim2.new(1, -20, 0, 2)
+bottomBlackLine.Position = UDim2.new(0, 10, 0, 74)
+bottomBlackLine.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+bottomBlackLine.BorderSizePixel = 0
+
+icon.MouseButton1Click:Connect(function() 
+    Play(CLICK); 
+    main.Visible = not main.Visible 
+end) 
+
+-- Compact Container Adjustments
+local holder = Instance.new("Frame",main) 
+holder.Size = UDim2.new(1,-20,1,-90); 
+holder.Position = UDim2.new(0,10,0,82); 
+holder.BackgroundTransparency = 1 
+
+local pMain = Instance.new("ScrollingFrame",holder) 
+pMain.Size = UDim2.new(1,0,1,0); 
+pMain.BackgroundTransparency = 1; 
+pMain.Visible = true; 
+pMain.CanvasSize = UDim2.new(0,0,1.8,0); 
+pMain.ScrollBarThickness = 2 
+
+local TargetName = Instance.new("TextBox", pMain); 
+TargetName.Size = UDim2.new(1,0,0,32); 
+TargetName.PlaceholderText = "TARGET USERNAME"; 
+TargetName.Font = Enum.Font.Code;
+TargetName.TextSize = 12;
+TargetName.BackgroundColor3 = Color3.fromRGB(15,15,15); 
+TargetName.TextColor3 = Color3.new(1,1,1); 
+Instance.new("UICorner",TargetName).CornerRadius = UDim.new(0,4) 
+
+local DelayInput = Instance.new("TextBox", pMain); 
+DelayInput.Size = UDim2.new(1,0,0,32); 
+DelayInput.Position = UDim2.new(0,0,0,40); 
+DelayInput.PlaceholderText = "DELAY (1.5s)"; 
+DelayInput.Font = Enum.Font.Code;
+DelayInput.TextSize = 12;
+DelayInput.BackgroundColor3 = Color3.fromRGB(15,15,15); 
+DelayInput.TextColor3 = Color3.new(1,1,1); 
+Instance.new("UICorner",DelayInput).CornerRadius = UDim.new(0,4)
+
+-- Pattern Indicator
+local currentPattern = "~~" 
+local patLbl = Instance.new("TextLabel", pMain); 
+patLbl.Size = UDim2.new(1,0,0,18); 
+patLbl.Position = UDim2.new(0,0,0,80); 
+patLbl.Text = "PATTERN: "..currentPattern; 
+patLbl.Font = Enum.Font.Code;
+patLbl.TextSize = 11;
+patLbl.TextColor3 = Color3.fromRGB(255,255,255); 
+patLbl.BackgroundTransparency = 1 
+
+-- 5 COMPACT PATTERN BUTTONS SELECTION
+local optionPatterns = {"@@", "__", "~~", "``", "ALL"}
+local patternContainer = Instance.new("Frame", pMain)
+patternContainer.Size = UDim2.new(1, 0, 0, 26)
+patternContainer.Position = UDim2.new(0, 0, 0, 102)
+patternContainer.BackgroundTransparency = 1
+
+for i, patOption in ipairs(optionPatterns) do
+    local btn = Instance.new("TextButton", patternContainer)
+    btn.Size = UDim2.new(0.18, 0, 1, 0)
+    btn.Position = UDim2.new((i-1) * 0.205, 0, 0, 0)
+    btn.Text = patOption
+    btn.Font = Enum.Font.Code
+    btn.TextSize = 11
+    btn.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+    btn.TextColor3 = Color3.new(1, 1, 1)
+    Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 4)
+    
+    btn.MouseButton1Click:Connect(function()
+        Play(CLICK)
+        currentPattern = patOption
+        patLbl.Text = "PATTERN: " .. currentPattern
+    end)
+end
+
+local StartBtn = Instance.new("TextButton", pMain); 
+StartBtn.Size = UDim2.new(1,0,0,35); 
+StartBtn.Position = UDim2.new(0,0,0,140); 
+StartBtn.Text = "START SPAM BOT"; 
+StartBtn.Font = Enum.Font.Code;
+StartBtn.TextSize = 12;
+StartBtn.BackgroundColor3 = Color3.fromRGB(0,150,0); 
+StartBtn.TextColor3 = Color3.new(1,1,1); 
+Instance.new("UICorner",StartBtn).CornerRadius = UDim.new(0,4)
+
+local isSpamming = false 
+
+-- ROASTS LIST
+local roasts = {
+    "AURA✨", "KING👑", "HELL🔥", "ZEAL🔥", "OWNED💀", 
+    "FADE🌌", "VOID🖤", "RAID⚔️", "DOOM💥", "ZERO🤡", 
+    "CLOWN🎪", "LOSS❌", "DONE💯", "CHIEF🎖️", "RUN🏃", 
+    "DEAD☠️", "RAGE💢", "MYTH🔮", "HOPE🌟", "SOUL👻"
+} 
+
+StartBtn.MouseButton1Click:Connect(function() 
+    Play(CLICK); 
+    isSpamming = not isSpamming; 
+    StartBtn.Text = isSpamming and "STOP SPAM BOT" or "START SPAM BOT"; 
+    StartBtn.BackgroundColor3 = isSpamming and Color3.fromRGB(150,0,0) or Color3.fromRGB(0,150,0) 
+    if isSpamming then 
+        task.spawn(function() 
+            local rIdx = 1 
+            while isSpamming do 
+                local target = TargetName.Text ~= "" and TargetName.Text:upper() or "USER" 
+                local d = tonumber(DelayInput.Text) or 1.5 
+                local word = roasts[rIdx] 
+                
+                local prefix = "SCRIPT BY HERMANN×NAMELESS💀" 
+                local base = " " .. target .. " TMKx MEH " .. word 
+                
+                local usePattern = currentPattern
+                if currentPattern == "ALL" then
+                    local randomPatterns = {"@@", "__", "~~", "``"}
+                    usePattern = randomPatterns[math.random(1, #randomPatterns)]
+                end
+                
+                local totalLength = 198 - (#prefix + #base) 
+                local rep = math.floor(totalLength / #usePattern) 
+                if rep < 0 then rep = 0 end 
+                local msg = prefix .. string.rep(usePattern, rep) .. base 
+                local ch = TextChatService.TextChannels:FindFirstChild("RBXGeneral") 
+                local success = false 
+                if ch then 
+                    local ok, err = pcall(function() ch:SendAsync(msg) end) 
+                    success = ok 
+                end 
+                if not success then 
+                    rIdx = (rIdx % #roasts) + 1 
+                end 
+                rIdx = (rIdx % #roasts) + 1; 
+                task.wait(d) 
+            end 
+        end) 
+    end 
+end) 
+
+------------------------------------------------ 
+print("H×N SPAM SYSTEM V5 LOADED")
+
+task.spawn(function() 
+    task.wait(1.5) 
+    local ch = TextChatService.TextChannels:FindFirstChild("RBXGeneral") 
+    if ch then 
+        PlaySound("137796245869143")
+        local finalMsg = "THE REAL AURA KINGS [HERMANN×NAMELESS] HAVE ARRIVED👑/EGO EMPIRE KA PAPA ENDLESS AURA👑/[PARTH x RUSHAN x EGO EMPIRE] TMX ME EGO🤡😂/ HERMANN×NAMELESS SPAMMER💀Loaded..." 
+        ch:SendAsync(finalMsg) 
+    end 
+end) 
+
+game:GetService("RunService").RenderStepped:Connect(function() 
+    if not icon or not icon.Parent then 
+        icon = Instance.new("TextButton", gui) 
+        icon.Size = UDim2.new(0,65,0,35) 
+        icon.Position = UDim2.new(0.05,0,0.2,0) 
+        icon.Text = "H×N" 
+        icon.Font = Enum.Font.Code 
+        icon.TextSize = 18 
+        icon.TextColor3 = Color3.fromRGB(255,0,0) 
+        icon.BackgroundColor3 = Color3.fromRGB(0,0,0) 
+        icon.BackgroundTransparency = 0.2
+        Instance.new("UICorner",icon).CornerRadius = UDim.new(0,6) 
+        icon.ZIndex = 1000 
+        icon.MouseButton1Click:Connect(function() 
+            main.Visible = not main.Visible 
+        end) 
+    end 
+end)
